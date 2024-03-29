@@ -1,0 +1,20 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres
+
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: RaNdOMSt0nGP@assW0rd
+      POSTGRES_DB: trysomethign_blog_local
+    volumes:
+      - ./dockerdb/mount:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
