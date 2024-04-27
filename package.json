@@ -55,8 +55,11 @@
     "ts-node": "^10.9.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "yarn lint"
+    "*.{js, jsx,ts,tsx}": [
+      "eslint --quiet --fix"
+    ],
+    "*.{json,js,ts,jsx,tsx,html}": [
+      "prettier --write --ignore-unknown"
     ]
   }
 }
