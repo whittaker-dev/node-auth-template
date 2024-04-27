@@ -5,7 +5,7 @@ import BaseRouter from "./routers";
 interface IApi {
   startServer(): Promise<Application>;
 }
-
+var a = 1
 class Api implements IApi {
   async startServer(): Promise<Application> {
     const app = express();
