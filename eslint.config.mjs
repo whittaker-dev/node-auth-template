@@ -16,6 +16,7 @@ export default [
       "@typescript-eslint/ban-types": 0,
       "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/no-empty-function": 0,
+      "--no-warn-ignored": 0
     },
     parser: "@typescript-eslint/parser",
     extends: ["prettier", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
