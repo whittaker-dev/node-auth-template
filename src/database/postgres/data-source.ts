@@ -1,6 +1,7 @@
 import { Environment } from "../../config/environment";
 import { DataSource } from "typeorm";
 import { User } from "./entities/user.entity";
+import { Branding } from "./entities/branding.entity";
 
 Environment.setup();
 
@@ -13,7 +14,7 @@ export const PostgresDataSource = new DataSource({
   database: process.env.POSTGRES_DB,
   synchronize: false,
   logging: false,
-  entities: [User],
+  entities: [User, Branding],
   subscribers: [],
   migrations: [__dirname + "/migrations/**/*.ts"],
 });

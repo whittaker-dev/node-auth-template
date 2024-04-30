@@ -12,8 +12,7 @@
     "db:migrate": "typeorm-ts-node-commonjs migration:run -d ./src/database/postgres/data-source.ts",
     "db:rollback": "typeorm-ts-node-commonjs migration:revert -d ./src/database/postgres/data-source.ts",
     "lint": "eslint src/**/*.ts",
-    "format": "eslint src/**/*.ts --fix",
-    "prepare": "husky install"
+    "format": "eslint src/**/*.ts --fix"
   },
   "repository": {
     "type": "git",
@@ -22,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.11.30",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -29,6 +29,7 @@
     "express": "^4.19.2",
     "http-status": "^1.7.4",
     "joi": "^17.12.2",
+    "mongoose": "^8.3.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
     "pg": "^8.11.3",

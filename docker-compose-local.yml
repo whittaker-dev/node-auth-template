@@ -4,14 +4,27 @@ services:
   api:
     image: "node:20.12.0"
     working_dir: /app
+    restart: always
     volumes:
       - .:/app
     ports:
       - 3001:3001
     command: bash -c "yarn && yarn dev"
+  mongodb: 
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGODB_HOST: localhost
+      MONGODB_USER: root
+      MONGODB_PASSWORD: RaNdOMSt0nGP@assW0rd
+      MONGODB_NAME: trysomethign_blog_mongo
+      MONGODB_PORT: 27017
+    volumes:
+      - ./dockerdb/mount:/var/lib/mongodb/data
   db:
     image: postgres
 
+    restart: always
     ports:
       - 5432:5432
     environment:
