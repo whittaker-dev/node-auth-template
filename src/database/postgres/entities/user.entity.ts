@@ -10,6 +10,12 @@ export class User {
   @Column({ name: "name", default: null })
   name: string;
 
+  @Column({})
+  email: string;
+
+  @Column({ default: null, select: false })
+  password: string;
+
   @Column({ name: "display_name", default: null })
   displayName: string;
 
@@ -30,4 +36,7 @@ export class User {
 
   @OneToOne(() => Branding, (branding) => branding.userId) // specify inverse side as a second parameter
   branding: Branding;
+
+  @Column({ name: "email_verified", default: false })
+  emailVerified: boolean;
 }
