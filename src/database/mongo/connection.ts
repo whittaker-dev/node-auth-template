@@ -6,8 +6,11 @@ Environment.setup();
 export const connectMongoose = async () => {
   try {
     const { MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT, MONGODB_NAME } = process.env;
+
     console.log(`mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_NAME}?authSource=admin`);
+
     await mongoose.connect(`mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_NAME}?authSource=admin`);
+    console.log("<<<<< Connected to mongodb >>>>>>");
   } catch (error) {
     throw error;
   }

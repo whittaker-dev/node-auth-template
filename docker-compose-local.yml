@@ -10,15 +10,14 @@ services:
     ports:
       - 3001:3001
     command: bash -c "yarn && yarn dev"
-  mongodb: 
+  mongodb:
     image: mongo:latest
     restart: always
     environment:
-      MONGODB_HOST: localhost
-      MONGODB_USER: root
-      MONGODB_PASSWORD: RaNdOMSt0nGP@assW0rd
-      MONGODB_NAME: trysomethign_blog_mongo
-      MONGODB_PORT: 27017
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=RaNdOMSt0nGP@assW0rd
+    ports:
+      - "27017:27017"
     volumes:
       - ./dockerdb/mount:/var/lib/mongodb/data
   db:
@@ -31,6 +30,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: RaNdOMSt0nGP@assW0rd
       POSTGRES_DB: trysomethign_blog_local
+      MONGODB_HOST: localhost
+      MONGODB_USER: root
+      MONGODB_PASSWORD: RaNdOMSt0nGP@assW0rd
+      MONGODB_NAME: trysomethign_blog_mongo
+      MONGODB_PORT: 27017
     volumes:
       - ./dockerdb/mount:/var/lib/postgresql/data
 

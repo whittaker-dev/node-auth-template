@@ -1,5 +1,6 @@
 import { Column, Entity, Index, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Branding } from "./branding.entity";
+import { ERoleUser } from "../interface";
 
 @Entity()
 export class User {
@@ -39,4 +40,7 @@ export class User {
 
   @Column({ name: "email_verified", default: false })
   emailVerified: boolean;
+
+  @Column({ type: "enum", enum: ERoleUser, default: ERoleUser.Dev })
+  role: ERoleUser;
 }
