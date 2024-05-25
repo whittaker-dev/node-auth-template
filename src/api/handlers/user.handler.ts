@@ -1,10 +1,11 @@
 import { User } from "../../database/postgres/entities/user.entity";
-import { IAuthHandler, IParamsGetPreSignUrl, IParamsSignUp } from "./interface";
+import { IUserHandler, IParamsGetPreSignUrl, IParamsSignUp } from "./interface";
 import userRepository from "../../database/postgres/respositories/user.repository";
 import bcrypt from "bcrypt";
 import AWS from "aws-sdk";
+import { UpdateResult } from "typeorm";
 
-class AuthHandler implements IAuthHandler {
+class UserHandler implements IUserHandler {
   s3: AWS.S3;
   constructor() {
     this.s3 = new AWS.S3({
@@ -73,6 +74,31 @@ class AuthHandler implements IAuthHandler {
       throw error;
     }
   }
+
+  async update(params: Partial<User>): Promise<UpdateResult> {
+    try {
+      const { id, avatar } = params;
+      const user = await userRepository.getById(id);
+      if (!user) {
+        throw new Error(`User with id ${id} doesn't exist`);
+      }
+
+      if (avatar) {
+        const result = await userRepository.update({
+          id,
+          avatar,
+        });
+        return result;
+      }
+
+      return await userRepository.update({
+        avatar: user.avatar,
+        ...params,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-export default new AuthHandler();
+export default new UserHandler();

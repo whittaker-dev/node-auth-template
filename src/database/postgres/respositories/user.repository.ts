@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { User } from "../entities/user.entity";
 import { IUserRepository } from "./interface";
 import { PostgresDataSource } from "../data-source";
@@ -30,7 +30,13 @@ class UserRepository implements IUserRepository {
   }
 
   getById(id: string): Promise<User> {
+    if (!id) return null;
     return this.repo.findOne({ where: { id } });
+  }
+
+  update(params: Partial<User>): Promise<UpdateResult> {
+    const { id } = params;
+    return this.repo.update(id, params);
   }
 }
 export default new UserRepository();

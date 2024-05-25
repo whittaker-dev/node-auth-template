@@ -10,8 +10,11 @@ const schemaFileUpload = Joi.object({
 });
 
 export const schema = {
+  paramsId: Joi.object({
+    id: Joi.string().required().error(new Error(`Id is required`)),
+  }),
   signUp: Joi.object({
-    avatar: Joi.string().required(),
+    avatar: Joi.string(),
     name: Joi.string().required(),
     userName: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -26,6 +29,17 @@ export const schema = {
   preSignUrlProfileImage: Joi.object({
     userId: Joi.string().required(),
     file: schemaFileUpload,
+  }),
+  updateUser: Joi.object({
+    avatar: Joi.string(),
+    name: Joi.string(),
+    userName: Joi.string(),
+    email: Joi.string().email(),
+    websiteUrl: Joi.string(),
+    bio: Joi.string(),
+    location: Joi.string(),
+    emailVerified: Joi.boolean(),
+    displayName: Joi.string(),
   }),
 };
 

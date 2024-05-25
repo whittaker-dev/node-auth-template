@@ -15,14 +15,29 @@ class UserRouter implements IRouter {
       async (req, res) => {
         try {
           const preSignUrl = await userHandler.getPreSignUrlProfileImage({ ...req.body });
-          logger.log("info", preSignUrl);
           return successResponse(res, preSignUrl);
         } catch (error) {
+          logger.error(error);
           return errorResponse(res, error);
         }
       },
     );
-    router.put("/:id");
+    router.put(
+      "/:id",
+      routerHelper.validateParams(schema.paramsId),
+      routerHelper.validateBody(schema.updateUser),
+      async (req, res) => {
+        try {
+          const { id } = req.params;
+          await userHandler.update({ ...req.body, id });
+
+          return successResponse(res, { message: `The user has been updated successfully` });
+        } catch (error) {
+          logger.error(error);
+          return errorResponse(res, error);
+        }
+      },
+    );
     return router;
   }
 }

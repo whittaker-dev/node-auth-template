@@ -5,6 +5,7 @@ import userHandler from "../handlers/user.handler";
 import routerHelper, { schema } from "../helper/router.helper";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import logger from "../logger";
 const router = Router();
 
 class AuthRouter implements IRouter {
@@ -26,6 +27,7 @@ class AuthRouter implements IRouter {
         delete newUser.password;
         return successResponse(res, { user: newUser });
       } catch (error) {
+        logger.error(error);
         return errorResponse(res, error);
       }
     });
@@ -48,6 +50,7 @@ class AuthRouter implements IRouter {
         const newToken = jwt.sign(user.id, process.env.JWT_SECRET_KEY);
         return successResponse(res, { user: { ...user, accessToken: newToken } });
       } catch (error) {
+        logger.error(error);
         return errorResponse(res, error);
       }
     });

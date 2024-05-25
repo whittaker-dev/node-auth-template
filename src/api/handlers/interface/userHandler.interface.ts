@@ -1,5 +1,6 @@
 import { IFileUpload } from "../../shared";
 import { User } from "../../../database/postgres/entities/user.entity";
+import { UpdateResult } from "typeorm";
 
 export interface IParamsSignUp {
   image: string;
@@ -15,10 +16,11 @@ export interface IParamsGetPreSignUrl {
   file: IFileUpload;
 }
 
-export interface IAuthHandler {
+export interface IUserHandler {
   create(params: IParamsSignUp): Promise<User>;
   getByEmail(email: string): Promise<User>;
   getPasswordUser(id: string): Promise<User>;
   getByUserName(userName: string): Promise<User>;
   getPreSignUrlProfileImage(params: IParamsGetPreSignUrl): Promise<string>;
+  update(params: Partial<User>): Promise<UpdateResult>;
 }
