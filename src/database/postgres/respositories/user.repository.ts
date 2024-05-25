@@ -28,5 +28,9 @@ class UserRepository implements IUserRepository {
   getByUserName(userName: string): Promise<User> {
     return this.repo.findOne({ where: { userName } });
   }
+
+  getById(id: string): Promise<User> {
+    return this.repo.findOne({ where: { id } });
+  }
 }
 export default new UserRepository();

@@ -3,6 +3,12 @@ import Joi, { ObjectSchema } from "joi";
 import { errorResponse } from "../routers/response";
 import { regexPassword } from "../utils";
 
+const schemaFileUpload = Joi.object({
+  name: Joi.string().required(),
+  type: Joi.string().required(),
+  extension: Joi.string().required().valid("png", "jpg", "jpeg", "gif"),
+});
+
 export const schema = {
   signUp: Joi.object({
     avatar: Joi.string().required(),
@@ -15,6 +21,11 @@ export const schema = {
   signIn: Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
+  }),
+
+  preSignUrlProfileImage: Joi.object({
+    userId: Joi.string().required(),
+    file: schemaFileUpload,
   }),
 };
 
