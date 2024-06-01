@@ -16,7 +16,7 @@ const logger = winston.createLogger({
       format: winston.format.printf((info) => {
         return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
       }),
-      filename: "info.log",
+      filename: "/src/api/logger/info.log",
       maxsize: 1,
     }),
     new winston.transports.Http({ host: "localhost", port: 8080 }),
