@@ -14,7 +14,7 @@ export const schema = {
     id: Joi.string().required().error(new Error(`Id is required`)),
   }),
   signUp: Joi.object({
-    avatar: Joi.string(),
+    avatar: Joi.string().allow(null, ""),
     name: Joi.string().required(),
     userName: Joi.string().required(),
     email: Joi.string().email().required(),
