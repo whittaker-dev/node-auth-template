@@ -25,6 +25,13 @@ export const schema = {
     email: Joi.string().required(),
     password: Joi.string().required(),
   }),
+  authenticateSocial: Joi.object({
+    id: Joi.number().required(),
+    name: Joi.string().required(),
+    location: Joi.string(),
+    avatar: Joi.string().required(),
+    email: Joi.string(),
+  }),
 
   preSignUrlProfileImage: Joi.object({
     userId: Joi.string().required(),

@@ -1,5 +1,5 @@
 import { User } from "../../database/postgres/entities/user.entity";
-import { IUserHandler, IParamsGetPreSignUrl, IParamsSignUp } from "./interface";
+import { IUserHandler, IParamsGetPreSignUrl, IParamsSignUp, IParamsCreateAccountSocial } from "./interface";
 import userRepository from "../../database/postgres/respositories/user.repository";
 import bcrypt from "bcrypt";
 import AWS from "aws-sdk";
@@ -22,6 +22,15 @@ class UserHandler implements IUserHandler {
       const { password } = params;
       const passwordHashed = await bcrypt.hash(password, 10);
       const newUser = await userRepository.create({ ...params, password: passwordHashed });
+      return newUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createAccountSocial(params: IParamsCreateAccountSocial): Promise<User> {
+    try {
+      const newUser = await userRepository.create({ ...params });
       return newUser;
     } catch (error) {
       throw error;
@@ -60,7 +69,7 @@ class UserHandler implements IUserHandler {
       if (!user) {
         throw new Error(`User doesn't exist`);
       }
-      const Key = `users/${userId}/avatar_${file.name}.${file.extension}`;
+      const Key = `users/${userId}/${file.name}.${file.extension}`;
       const options = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key,

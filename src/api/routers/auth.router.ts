@@ -6,6 +6,7 @@ import routerHelper, { schema } from "../helper/router.helper";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import logger from "../logger";
+import { EAuthProvider } from "../../database/postgres/interface";
 const router = Router();
 
 class AuthRouter implements IRouter {
@@ -49,6 +50,25 @@ class AuthRouter implements IRouter {
         }
         const newToken = jwt.sign(user.id, process.env.JWT_SECRET_KEY);
         return successResponse(res, { user: { ...user, accessToken: newToken } });
+      } catch (error) {
+        logger.error(error);
+        return errorResponse(res, error);
+      }
+    });
+
+    router.post("/social/:provider", routerHelper.validateBody(schema.authenticateSocial), async (req, res) => {
+      try {
+        const { provider } = req.params;
+        const { id, name, email, location, avatar } = req.body;
+        const newUser = await userHandler.createAccountSocial({
+          email,
+          avatar,
+          name,
+          location: location ?? "",
+          authProviderId: id,
+          authProvider: provider as EAuthProvider,
+        });
+        return successResponse(res, { newUser });
       } catch (error) {
         logger.error(error);
         return errorResponse(res, error);

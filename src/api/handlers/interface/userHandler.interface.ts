@@ -1,6 +1,7 @@
 import { IFileUpload } from "../../shared";
 import { User } from "../../../database/postgres/entities/user.entity";
 import { UpdateResult } from "typeorm";
+import { EAuthProvider } from "../../../database/postgres/interface";
 
 export interface IParamsSignUp {
   image: string;
@@ -11,6 +12,15 @@ export interface IParamsSignUp {
   passwordConfirm: string;
 }
 
+export interface IParamsCreateAccountSocial {
+  authProviderId: string;
+  authProvider: EAuthProvider;
+  name: string;
+  email: string;
+  avatar: string;
+  location: string;
+}
+
 export interface IParamsGetPreSignUrl {
   userId: string;
   file: IFileUpload;
@@ -18,6 +28,7 @@ export interface IParamsGetPreSignUrl {
 
 export interface IUserHandler {
   create(params: IParamsSignUp): Promise<User>;
+  createAccountSocial(params: IParamsCreateAccountSocial): Promise<User>;
   getByEmail(email: string): Promise<User>;
   getPasswordUser(id: string): Promise<User>;
   getByUserName(userName: string): Promise<User>;
