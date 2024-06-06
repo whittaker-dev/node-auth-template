@@ -1,7 +1,7 @@
-import { Repository, UpdateResult } from "typeorm";
-import { User } from "../entities/user.entity";
-import { IUserRepository } from "./interface";
+import { FindOptionsWhere, Repository, UpdateResult } from "typeorm";
 import { PostgresDataSource } from "../data-source";
+import { User } from "../entities/user.entity";
+import { IParamsGetDetailUser, IUserRepository } from "./interface";
 
 class UserRepository implements IUserRepository {
   repo: Repository<User>;
@@ -37,6 +37,25 @@ class UserRepository implements IUserRepository {
   update(params: Partial<User>): Promise<UpdateResult> {
     const { id } = params;
     return this.repo.update(id, params);
+  }
+
+  getDetail(params: IParamsGetDetailUser): Promise<User> {
+    try {
+      const { authProvideId, id } = params;
+
+      const whereOptions: FindOptionsWhere<User> | FindOptionsWhere<User> = {};
+      if (authProvideId) {
+        whereOptions["authProviderId"] = authProvideId;
+      }
+
+      if (id) {
+        whereOptions["id"] = id;
+      }
+
+      return this.repo.findOne({ where: { ...whereOptions } });
+    } catch (error) {
+      throw error;
+    }
   }
 }
 export default new UserRepository();

@@ -1,6 +1,11 @@
 import { UpdateResult } from "typeorm";
 import { User } from "../../entities/user.entity";
 
+export interface IParamsGetDetailUser {
+  authProvideId?: string;
+  id?: string;
+}
+
 export interface IUserRepository {
   create(params: Partial<User>): Promise<User>;
   getByEmail(email: string): Promise<User>;
@@ -8,4 +13,5 @@ export interface IUserRepository {
   getByUserName(userName: string): Promise<User>;
   getById(id: string): Promise<User>;
   update(params: Partial<User>): Promise<UpdateResult>;
+  getDetail(params: IParamsGetDetailUser): Promise<User>;
 }

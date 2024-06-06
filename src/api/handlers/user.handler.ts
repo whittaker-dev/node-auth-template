@@ -4,6 +4,7 @@ import userRepository from "../../database/postgres/respositories/user.repositor
 import bcrypt from "bcrypt";
 import AWS from "aws-sdk";
 import { UpdateResult } from "typeorm";
+import { IParamsGetDetailUser } from "src/database/postgres/respositories/interface";
 
 class UserHandler implements IUserHandler {
   s3: AWS.S3;
@@ -104,6 +105,15 @@ class UserHandler implements IUserHandler {
         avatar: user.avatar,
         ...params,
       });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getDetail(params: IParamsGetDetailUser): Promise<User> {
+    try {
+      const user = await userRepository.getDetail({ ...params });
+      return user;
     } catch (error) {
       throw error;
     }

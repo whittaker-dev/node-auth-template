@@ -2,6 +2,7 @@ import { IFileUpload } from "../../shared";
 import { User } from "../../../database/postgres/entities/user.entity";
 import { UpdateResult } from "typeorm";
 import { EAuthProvider } from "../../../database/postgres/interface";
+import { IParamsGetDetailUser } from "../../../database/postgres/respositories/interface";
 
 export interface IParamsSignUp {
   image: string;
@@ -34,4 +35,5 @@ export interface IUserHandler {
   getByUserName(userName: string): Promise<User>;
   getPreSignUrlProfileImage(params: IParamsGetPreSignUrl): Promise<string>;
   update(params: Partial<User>): Promise<UpdateResult>;
+  getDetail(params: IParamsGetDetailUser): Promise<User>;
 }

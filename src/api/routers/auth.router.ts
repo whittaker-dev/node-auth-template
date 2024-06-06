@@ -1,12 +1,14 @@
+import bcrypt from "bcrypt";
 import { Router } from "express";
-import { IRouter } from "./interface";
-import { errorResponse, successResponse } from "./response";
+import { EAuthProvider } from "../../database/postgres/interface";
+import authHandler from "../handlers/auth.handler";
 import userHandler from "../handlers/user.handler";
 import routerHelper, { schema } from "../helper/router.helper";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import logger from "../logger";
-import { EAuthProvider } from "../../database/postgres/interface";
+import { IRouter } from "./interface";
+import { errorResponse, successResponse } from "./response";
+import authMiddleware from "../middleware/auth.middleware";
+import { IUserAuthInfoRequest } from "../types/interface";
 const router = Router();
 
 class AuthRouter implements IRouter {
@@ -48,8 +50,8 @@ class AuthRouter implements IRouter {
         if (!user.emailVerified) {
           throw new Error(`Account doesn't verified`);
         }
-        const newToken = jwt.sign(user.id, process.env.JWT_SECRET_KEY);
-        return successResponse(res, { user: { ...user, accessToken: newToken } });
+        const { accessToken } = authHandler.generateAuthToken(user.id);
+        return successResponse(res, { user: { ...user, accessToken } });
       } catch (error) {
         logger.error(error);
         return errorResponse(res, error);
@@ -60,6 +62,12 @@ class AuthRouter implements IRouter {
       try {
         const { provider } = req.params;
         const { id, name, email, location, avatar } = req.body;
+        const userExist = await userHandler.getDetail({ authProvideId: id });
+        if (userExist) {
+          const { accessToken } = authHandler.generateAuthToken(userExist.id);
+          return successResponse(res, { user: { ...userExist, accessToken } });
+        }
+
         const newUser = await userHandler.createAccountSocial({
           email,
           avatar,
@@ -68,10 +76,21 @@ class AuthRouter implements IRouter {
           authProviderId: id,
           authProvider: provider as EAuthProvider,
         });
-        return successResponse(res, { newUser });
+        const { accessToken } = authHandler.generateAuthToken(newUser.id);
+
+        return successResponse(res, { user: { ...newUser, accessToken } });
       } catch (error) {
         logger.error(error);
         return errorResponse(res, error);
+      }
+    });
+
+    router.get("/get-user", authMiddleware.authToken, async (req: IUserAuthInfoRequest, res) => {
+      try {
+        const { user } = req;
+        return successResponse(res, { user });
+      } catch (error) {
+        throw error;
       }
     });
     return router;
