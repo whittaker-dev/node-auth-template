@@ -50,8 +50,8 @@ class AuthRouter implements IRouter {
         if (!user.emailVerified) {
           throw new Error(`Account doesn't verified`);
         }
-        const { accessToken } = authHandler.generateAuthToken(user.id);
-        return successResponse(res, { user: { ...user, accessToken } });
+        const { accessToken, refreshToken } = authHandler.generateAuthToken(user.id);
+        return successResponse(res, { user: { ...user, accessToken, refreshToken } });
       } catch (error) {
         logger.error(error);
         return errorResponse(res, error);
@@ -76,9 +76,9 @@ class AuthRouter implements IRouter {
           authProviderId: id,
           authProvider: provider as EAuthProvider,
         });
-        const { accessToken } = authHandler.generateAuthToken(newUser.id);
+        const { accessToken, refreshToken } = authHandler.generateAuthToken(newUser.id);
 
-        return successResponse(res, { user: { ...newUser, accessToken } });
+        return successResponse(res, { user: { ...newUser, accessToken, refreshToken } });
       } catch (error) {
         logger.error(error);
         return errorResponse(res, error);
@@ -89,6 +89,16 @@ class AuthRouter implements IRouter {
       try {
         const { user } = req;
         return successResponse(res, { user });
+      } catch (error) {
+        throw error;
+      }
+    });
+
+    router.get("/refresh-token", authMiddleware.authToken, async (req: IUserAuthInfoRequest, res) => {
+      try {
+        const { accessToken, refreshToken } = authHandler.generateAuthToken(req.user.id);
+
+        return successResponse(res, { accessToken, refreshToken });
       } catch (error) {
         throw error;
       }

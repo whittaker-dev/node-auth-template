@@ -6,6 +6,7 @@ export enum EAuthProvider {
   Github = "Github",
   Google = "Google",
   Apple = "Apple",
+  Discord = "Discord",
   Twitter = "Twitter",
   EmailPassword = "EmailPassword",
 }

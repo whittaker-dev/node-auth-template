@@ -26,7 +26,7 @@ export const schema = {
     password: Joi.string().required(),
   }),
   authenticateSocial: Joi.object({
-    id: Joi.number().required(),
+    id: Joi.string().required(),
     name: Joi.string().required(),
     location: Joi.string(),
     avatar: Joi.string().required(),

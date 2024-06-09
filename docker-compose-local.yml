@@ -30,11 +30,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: RaNdOMSt0nGP@assW0rd
       POSTGRES_DB: trysomethign_blog_local
-      MONGODB_HOST: localhost
-      MONGODB_USER: root
-      MONGODB_PASSWORD: RaNdOMSt0nGP@assW0rd
-      MONGODB_NAME: trysomethign_blog_mongo
-      MONGODB_PORT: 27017
+     
     volumes:
       - ./dockerdb/mount:/var/lib/postgresql/data
 
