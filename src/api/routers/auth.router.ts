@@ -64,8 +64,8 @@ class AuthRouter implements IRouter {
         const { id, name, email, location, avatar } = req.body;
         const userExist = await userHandler.getDetail({ authProvideId: id });
         if (userExist) {
-          const { accessToken } = authHandler.generateAuthToken(userExist.id);
-          return successResponse(res, { user: { ...userExist, accessToken } });
+          const { accessToken, refreshToken } = authHandler.generateAuthToken(userExist.id);
+          return successResponse(res, { user: { ...userExist, accessToken, refreshToken } });
         }
 
         const newUser = await userHandler.createAccountSocial({
