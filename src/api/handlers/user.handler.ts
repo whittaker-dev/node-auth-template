@@ -100,7 +100,6 @@ class UserHandler implements IUserHandler {
         });
         return result;
       }
-
       return await userRepository.update({
         avatar: user.avatar,
         ...params,
