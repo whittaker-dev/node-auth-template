@@ -27,7 +27,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: RaNdOMSt0nGP@assW0rd
       POSTGRES_DB: trysomethign_blog_local
      
