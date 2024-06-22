@@ -1,9 +1,9 @@
 import { NextFunction, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import userHandler from "../handlers/user.handler";
-import { IUserAuthInfoRequest } from "../types/interface";
-import { errorResponse } from "../routers/response";
 import logger from "../logger";
+import { errorResponse } from "../routers/response";
+import { IUserAuthInfoRequest } from "../types/interface";
 
 class AuthMiddleware {
   async authToken(req: IUserAuthInfoRequest, res: Response, next: NextFunction) {
@@ -30,7 +30,7 @@ class AuthMiddleware {
       next();
     } catch (error) {
       logger.error(error);
-      return errorResponse(res, new Error("Forbidden"));
+      return errorResponse(res, error, 401);
     }
   }
 }

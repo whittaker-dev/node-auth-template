@@ -96,9 +96,9 @@ class AuthRouter implements IRouter {
 
     router.get("/refresh-token", authMiddleware.authToken, async (req: IUserAuthInfoRequest, res) => {
       try {
-        const { accessToken, refreshToken } = authHandler.generateAuthToken(req.user.id);
+        const { accessToken } = authHandler.generateAuthToken(req.user.id);
 
-        return successResponse(res, { accessToken, refreshToken });
+        return successResponse(res, { accessToken });
       } catch (error) {
         throw error;
       }
