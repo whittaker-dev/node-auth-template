@@ -90,7 +90,8 @@ class AuthRouter implements IRouter {
         const { user } = req;
         return successResponse(res, { user });
       } catch (error) {
-        throw error;
+        logger.error(error);
+        return errorResponse(res, error);
       }
     });
 
@@ -100,7 +101,8 @@ class AuthRouter implements IRouter {
 
         return successResponse(res, { accessToken });
       } catch (error) {
-        throw error;
+        logger.error(error);
+        return errorResponse(res, error);
       }
     });
     return router;
