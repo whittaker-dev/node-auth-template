@@ -1,14 +1,15 @@
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import { EAuthProvider } from "../../database/postgres/interface";
+import mailer from "../../services/mailer";
 import authHandler from "../handlers/auth.handler";
 import userHandler from "../handlers/user.handler";
 import routerHelper, { schema } from "../helper/router.helper";
 import logger from "../logger";
-import { IRouter } from "./interface";
-import { errorResponse, successResponse } from "./response";
 import authMiddleware from "../middleware/auth.middleware";
 import { IUserAuthInfoRequest } from "../types/interface";
+import { IRouter } from "./interface";
+import { errorResponse, successResponse } from "./response";
 const router = Router();
 
 class AuthRouter implements IRouter {
@@ -26,7 +27,18 @@ class AuthRouter implements IRouter {
           throw new Error(`User name does exist`);
         }
 
-        const newUser = await userHandler.create(req.body);
+        const otp = authHandler.generateOtp();
+        await mailer.sendMail({
+          message: `OTP for your account: <strong>${otp}</strong>`,
+          subject: "TrySomeThignBlog - New Account",
+          to: email,
+          text: "SIGN UP NEW ACCOUNT",
+        });
+        const newUser = await userHandler.create({
+          ...req.body,
+          otp,
+        });
+
         delete newUser.password;
         return successResponse(res, { user: newUser });
       } catch (error) {
@@ -102,6 +114,26 @@ class AuthRouter implements IRouter {
         return successResponse(res, { accessToken });
       } catch (error) {
         logger.error(error);
+        return errorResponse(res, error);
+      }
+    });
+
+    router.post("/verify-otp", routerHelper.validateBody(schema.verifyOtp), async (req, res) => {
+      try {
+        const { otp, email } = req.body;
+        await authHandler.verifyOtp(otp, email);
+        return successResponse(res, { message: "Your OTP has been verified successfully" });
+      } catch (error) {
+        return errorResponse(res, error);
+      }
+    });
+
+    router.post("/resend-otp", routerHelper.validateBody(schema.resendOtp), async (req, res) => {
+      try {
+        const { email } = req.body;
+        await authHandler.resendOtp(email);
+        return successResponse(res, { message: `Otp has been resend successfully` });
+      } catch (error) {
         return errorResponse(res, error);
       }
     });

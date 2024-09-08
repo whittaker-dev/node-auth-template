@@ -54,4 +54,7 @@ export class User {
 
   @Column({ name: "auth_provider_id", default: null })
   authProviderId: string;
+
+  @Column({ name: "otp", default: null })
+  otp: string;
 }

@@ -11,6 +11,7 @@ export interface IParamsSignUp {
   email: string;
   password: string;
   passwordConfirm: string;
+  otp: string;
 }
 
 export interface IParamsCreateAccountSocial {

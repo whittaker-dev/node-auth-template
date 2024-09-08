@@ -33,6 +33,14 @@ export const schema = {
     email: Joi.string(),
   }),
 
+  verifyOtp: Joi.object({
+    otp: Joi.string().required(),
+    email: Joi.string().email().required(),
+  }),
+  resendOtp: Joi.object({
+    email: Joi.string().email().required(),
+  }),
+
   preSignUrlProfileImage: Joi.object({
     userId: Joi.string().required(),
     file: schemaFileUpload,
