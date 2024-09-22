@@ -56,6 +56,15 @@ export const schema = {
     emailVerified: Joi.boolean(),
     displayName: Joi.string(),
   }),
+
+  subscribePlan: Joi.object({
+    priceId: Joi.string().required().messages({
+      "any.required": "Plan is required, Please select a subscription plan",
+    }),
+    type: Joi.string().required().messages({
+      "any.required": "Type plan is required",
+    }),
+  }),
 };
 
 class RouterHelper {

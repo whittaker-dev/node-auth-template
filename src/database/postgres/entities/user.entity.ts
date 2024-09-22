@@ -1,9 +1,11 @@
-import { Column, Entity, Index, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Branding } from "./branding.entity";
 import { EAuthProvider, ERoleUser } from "../interface";
+import { BaseEntity } from "./base.entity";
+import { SubscriptionPlan } from "./subscriptionPlan.entity";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -57,4 +59,10 @@ export class User {
 
   @Column({ name: "otp", default: null })
   otp: string;
+
+  @OneToMany(() => SubscriptionPlan, (plan) => plan.user)
+  subscriptions: SubscriptionPlan[];
+
+  @Column({ name: "stripe_customer_id", default: null })
+  stripeCustomerId: string;
 }
