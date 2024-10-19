@@ -2,7 +2,7 @@ import { IFileUpload } from "../../shared";
 import { User } from "../../../database/postgres/entities/user.entity";
 import { UpdateResult } from "typeorm";
 import { EAuthProvider } from "../../../database/postgres/interface";
-import { IParamsGetDetailUser } from "../../../database/postgres/respositories/interface";
+import { IParamsGetDetailUser } from "../../../database/postgres/repositories/interface";
 
 export interface IParamsSignUp {
   image: string;

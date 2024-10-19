@@ -1,10 +1,10 @@
 import { User } from "../../database/postgres/entities/user.entity";
 import { IUserHandler, IParamsGetPreSignUrl, IParamsSignUp, IParamsCreateAccountSocial } from "./interface";
-import userRepository from "../../database/postgres/respositories/user.repository";
+import userRepository from "../../database/postgres/repositories/user.repository";
 import bcrypt from "bcrypt";
 import AWS from "aws-sdk";
 import { UpdateResult } from "typeorm";
-import { IParamsGetDetailUser } from "src/database/postgres/respositories/interface";
+import { IParamsGetDetailUser } from "../../database/postgres/repositories/interface";
 
 class UserHandler implements IUserHandler {
   s3: AWS.S3;

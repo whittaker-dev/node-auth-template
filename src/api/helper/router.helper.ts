@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Joi, { ObjectSchema } from "joi";
 import { errorResponse } from "../routers/response";
 import { regexPassword } from "../utils";
+import { ETypeSubscription } from "../../database/postgres/interface/subscription.interface";
 
 const schemaFileUpload = Joi.object({
   name: Joi.string().required(),
@@ -61,9 +62,12 @@ export const schema = {
     priceId: Joi.string().required().messages({
       "any.required": "Plan is required, Please select a subscription plan",
     }),
-    type: Joi.string().required().messages({
-      "any.required": "Type plan is required",
-    }),
+    type: Joi.string()
+      .required()
+      .valid(ETypeSubscription.FreeTrial, ETypeSubscription.Advanced, ETypeSubscription.Unlimited)
+      .messages({
+        "any.required": "Type plan is required",
+      }),
   }),
 };
 

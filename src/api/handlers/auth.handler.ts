@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import mailer from "../../services/mailer";
 import { UpdateResult } from "typeorm";
-import userRepository from "../../database/postgres/respositories/user.repository";
+import userRepository from "../../database/postgres/repositories/user.repository";
 import IAuthHandler from "./interface/authHandler.interface";
 
 class AuthHandler implements IAuthHandler {

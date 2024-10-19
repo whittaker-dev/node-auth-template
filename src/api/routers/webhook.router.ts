@@ -2,6 +2,9 @@ import express, { Router } from "express";
 import Stripe from "stripe";
 import paymentGateway from "../../services/paymentGateway";
 import { IRouter } from "./interface";
+import userRepository from "../../database/postgres/repositories/user.repository";
+import subscriptionRepository from "../../database/postgres/repositories/subscription.repository";
+import { ESubscriptionStatus } from "../../database/postgres/interface/subscription.interface";
 
 const router = Router();
 
@@ -31,12 +34,39 @@ class WebhookRouter implements IRouter {
           const paymentIntent = event.data.object;
           console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
           break;
-        case "payment_method.attached":
-          const paymentMethod = event.data.object;
+        case "customer.created":
+          const customerData = event.data.object;
+          await userRepository.update({
+            id: customerData.metadata.userId,
+            stripeCustomerId: customerData.id,
+          });
+
           break;
-        case "checkout.session.async_payment_succeeded":
+        case "checkout.session.completed":
           const checkoutData = event.data.object;
-          console.log(">>>> Checkout data", checkoutData);
+          const { subscriptionId } = checkoutData.metadata;
+          await subscriptionRepository.update({ id: subscriptionId, status: ESubscriptionStatus.Active });
+          break;
+        case "customer.subscription.created":
+          const subscriptionCreated = event.data.object;
+          await this.stripe.subscriptions.update(subscriptionCreated.id, { cancel_at_period_end: true });
+          await subscriptionRepository.update({
+            id: subscriptionCreated.metadata.subscriptionId,
+            stripeSubscriptionId: subscriptionCreated.id,
+          });
+
+          break;
+        case "customer.subscription.updated":
+          const subscriptionUpdated = event.data.object;
+          console.log("subscriptionUpdated", subscriptionUpdated);
+          break;
+        case "customer.subscription.deleted":
+          const subscriptionDeleted = event.data.object;
+          console.log("subscriptionDeleted", subscriptionDeleted);
+          await subscriptionRepository.updateByStripe(subscriptionId, {
+            status: ESubscriptionStatus.Cancelled,
+            expiredAt: null,
+          });
           break;
         default:
           // Unexpected event type

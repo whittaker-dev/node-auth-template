@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
-import { ETypeSubscription } from "../interface/subscription.interface";
+import { ESubscriptionStatus, ETypeSubscription } from "../interface/subscription.interface";
 import { User } from "./user.entity";
 
 @Entity()
@@ -20,4 +20,10 @@ export class SubscriptionPlan extends BaseEntity {
 
   @Column({ name: "is_default", default: true })
   isDefault: boolean;
+
+  @Column({ name: "status", enum: ESubscriptionStatus, default: ESubscriptionStatus.Pending })
+  status: ESubscriptionStatus;
+
+  @Column({ name: "expired_at", default: null })
+  expiredAt: Date;
 }
