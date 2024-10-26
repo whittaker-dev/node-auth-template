@@ -69,6 +69,15 @@ export const schema = {
         "any.required": "Type plan is required",
       }),
   }),
+
+  createResource: Joi.object({
+    title: Joi.string().max(50).required(),
+    description: Joi.string().max(500).required(),
+    link: Joi.string().required(),
+    boardId: Joi.string(),
+    tagIds: Joi.array().items(Joi.string()),
+    isPublish: Joi.boolean(),
+  }),
 };
 
 class RouterHelper {

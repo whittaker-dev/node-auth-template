@@ -3,6 +3,9 @@ import { DataSource } from "typeorm";
 import { User } from "./entities/user.entity";
 import { Branding } from "./entities/branding.entity";
 import { SubscriptionPlan } from "./entities/subscriptionPlan.entity";
+import { BoardResource } from "./entities/board.entity";
+import { Resource } from "./entities/resource.entity";
+import { ResourceTag } from "./entities/resourceTag.entity";
 
 Environment.setup();
 
@@ -18,7 +21,10 @@ export const PostgresDataSource = new DataSource({
   entities: [
     User, 
     Branding, 
-    SubscriptionPlan
+    SubscriptionPlan,
+    BoardResource,
+    Resource,
+    ResourceTag
   ],
   subscribers: [],
   migrations: [__dirname + "/migrations/**/*.ts"],

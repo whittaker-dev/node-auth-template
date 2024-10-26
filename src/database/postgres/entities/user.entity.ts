@@ -1,14 +1,12 @@
-import { Column, Entity, Index, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Branding } from "./branding.entity";
+import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
 import { EAuthProvider, ERoleUser } from "../interface";
 import { BaseEntity } from "./base.entity";
+import { Branding } from "./branding.entity";
+import { Resource } from "./resource.entity";
 import { SubscriptionPlan } from "./subscriptionPlan.entity";
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
   @Index()
   @Column({ name: "name", default: null })
   name: string;
@@ -65,4 +63,7 @@ export class User extends BaseEntity {
 
   @Column({ name: "stripe_customer_id", default: null })
   stripeCustomerId: string;
+
+  @OneToMany(() => Resource, (resource) => resource.author)
+  resources: Resource[];
 }

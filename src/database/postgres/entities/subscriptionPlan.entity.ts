@@ -1,13 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { BaseEntity } from "./base.entity";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { ESubscriptionStatus, ETypeSubscription } from "../interface/subscription.interface";
+import { BaseEntity } from "./base.entity";
 import { User } from "./user.entity";
 
 @Entity()
 export class SubscriptionPlan extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
   @Column({ default: ETypeSubscription.FreeTrial, enum: ETypeSubscription })
   type: ETypeSubscription;
 

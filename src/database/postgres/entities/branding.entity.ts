@@ -1,11 +1,9 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
 import { User } from "./user.entity";
+import { BaseEntity } from "./base.entity";
 
 @Entity()
-export class Branding {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Branding extends BaseEntity {
   @Column({ name: "color", default: null })
   color: string;
 
